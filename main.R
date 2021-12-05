@@ -1,0 +1,41 @@
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+# install.packages("lubridate")
+library(lubridate, warn.conflicts = FALSE)
+library(plotly)
+args <- commandArgs(T)
+data <- read.csv(paste0("./data/", args[1], ".csv"))
+
+
+sleep_length <- time_length(hm(data$Wake.Up.Time) - hm(data$Bedtime), unit = "hour")
+data <- data %>% mutate(sleep_length = sleep_length)
+
+data_melted <- data[, 1:3] %>% gather(type, time, -Date, na.rm = T)
+
+
+p1 <- ggplot(data_melted, aes(x = Date, y = time, group = type, color = type)) +
+    geom_line() +
+    geom_point(size = 3) +
+    geom_text(aes(x = Date, y = time, label = time), nudge_y = 0.5) +
+    ylab("Time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+p2 <- ggplot(data = data, aes(x = Date, y = sleep_length)) +
+    geom_bar(stat = "identity", fill = "#7b8c7c") +
+    geom_text(aes(x = Date, y = sleep_length, 
+        label = sprintf("%0.1f", sleep_length)), 
+        vjust = 5, color = "#ffffff") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+if (!dir.exists("./plot")) {
+    dir.create("./plot")
+}
+
+ggsave(p1, filename = paste0("./plot/", args[1], "_sleep_time.png"), 
+    width = 12, height = 9, dpi = 300)
+ggsave(p2,
+    filename = paste0("./plot/", args[1], "_sleep_length.png"),
+        width = 12, height = 9, dpi = 300)
+
+        
