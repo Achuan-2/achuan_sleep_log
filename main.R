@@ -8,7 +8,7 @@ args <- commandArgs(T)
 data <- read.csv(paste0("./data/", args[1], ".csv"))
 
 
-sleep_length <- time_length(hm(data$Wake.Up.Time) - hm(data$Bedtime), unit = "hour")
+sleep_length <- time_length(hm(data[, 3]) - hm(data[, 2]), unit = "hour")
 data <- data %>% mutate(sleep_length = sleep_length)
 
 data_melted <- data[, 1:3] %>% gather(type, time, -Date, na.rm = T)
@@ -39,4 +39,3 @@ ggsave(p2,
     filename = paste0("./plot/", args[1], "_sleep_length.png"),
         width = 12, height = 9, dpi = 300)
 
-        
