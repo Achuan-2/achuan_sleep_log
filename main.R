@@ -23,9 +23,10 @@ p1 <- ggplot(data_melted, aes(x = Date, y = time, group = type, color = type)) +
 
 p2 <- ggplot(data = data, aes(x = Date, y = sleep_length)) +
     geom_bar(stat = "identity", fill = "#7b8c7c") +
-    geom_text(aes(x = Date, y = sleep_length, 
-        label = sprintf("%0.1f", sleep_length)), 
+    geom_text(aes(x = Date, y = sleep_length,
+        label = sprintf("%0.1f", sleep_length)),
         vjust = 5, color = "#ffffff") +
+    ylab("Sleep Length") +  
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 if (!dir.exists("./plot")) {
