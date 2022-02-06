@@ -34,9 +34,9 @@ if (!dir.exists("./plot")) {
     dir.create("./plot")
 }
 
-ggsave(p1, filename = paste0("./plot/", args[1], "_sleep_time.png"), 
+ggsave(p1, filename = paste0("./plot/", args[1], "_sleep_time.svg"), 
     width = 12, height = 9, dpi = 300)
 ggsave(p2,
-    filename = paste0("./plot/", args[1], "_sleep_length.png"),
+    filename = paste0("./plot/", args[1], "_sleep_length.svg"),
         width = 12, height = 9, dpi = 300)
 
